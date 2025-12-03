@@ -1,15 +1,25 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
+import { AccessContext } from '../context/MyAccessProvider'
 
 export const Home = () => {
+    const {token} = useContext(AccessContext)
+    
     const navigate = useNavigate()
-    const [token,setToken] = useState(true)
-  return (
-    <div className="home">
-        <h1>Home</h1>
-        <button onClick={()=>navigate("/topics")}>topic</button>
-        {token&& <button onClick={()=>navigate("/addcard")}>Új kártya hozzáadása</button>}
-    </div>
-  )
+
+    return (
+        <div className='homeContainer fadeIn'>
+            <div className="home">
+            <h1>Home</h1>
+
+            <button onClick={() => navigate("/topics")}>Topicok</button>
+
+            {token && (
+                <button onClick={() => navigate("/addcard")} className="primary">
+                    Új kártya hozzáadása
+                </button>
+            )}
+            </div>
+        </div>
+    )
 }

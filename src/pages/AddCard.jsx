@@ -10,15 +10,16 @@ export const AddCard = () => {
   const { id } = useParams()
   console.log(id);
   
-  
+
 
   const handleAdd = () => {
     const newCard = {question:newQuestion,answer:newAnswer}
     addCard(id,newCard)
   }
-
+  
   const navigate = useNavigate();
   return (
+    <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh"}}>
     <div className="addcard">
       <p>kerdes</p>
         <input type="text" value={newQuestion} onChange={(e)=>setNewQuestion(e.target.value)}/>
@@ -27,5 +28,7 @@ export const AddCard = () => {
 
         <button onClick={handleAdd}>Mentés</button>
     </div>
+    </div>
+
   );
 };

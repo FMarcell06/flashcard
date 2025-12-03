@@ -9,6 +9,9 @@ import { Header } from './components/Header'
 import { AddCard } from './pages/AddCard'
 import { AddTopic } from './pages/AddTopic'
 import { Topic } from './pages/Topic'
+import '@fontsource/inter';
+
+
 function App() {
   const [count, setCount] = useState(0)
 
