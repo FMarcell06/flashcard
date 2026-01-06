@@ -10,13 +10,15 @@ export const Topics = () => {
   const [topics, setTopics] = useState([]);
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
-  const {token} = useContext(AccessContext)
+  const {hasAccess} = useContext(AccessContext)
   useEffect(() => {
     readTopicsOnce(setTopics);
   }, []);
 
+
+
   const handleAddTopic = () => {
-    if(token) navigate("/addtopic")
+    if(hasAccess) navigate("/addtopic")
     else setOpen(true)
   }
 

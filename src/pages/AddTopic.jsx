@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router'
 
 export const AddTopic = () => {
     const [newTopic,setNewTopic] = useState("")
-    const {token,clearKey} = useContext(AccessContext)
+    const {hasAccess,clearKey} = useContext(AccessContext)
     const navigate = useNavigate()
 
     const handleAdd = async ()=> {

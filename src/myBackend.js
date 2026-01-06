@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, getDocs, query, QuerySnapshot, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, QuerySnapshot, where, writeBatch } from "firebase/firestore";
 import { db } from "./firebaseApp";
 
 
@@ -62,5 +62,72 @@ export const readCardsOnce = async (topicId,setCards) => {
     } catch (error) {
         console.log("Egyszeri kértya lekérési hiba: ",error);
         return [];
+    }
+}
+
+export const readCards = async (topicId,setCards)=>{
+    const subColRef = collection(db, "topics",topicId,"cards")
+    const q=query(subColRef)
+    const unsubscribe = onSnapshot(q,(snapshot)=>{
+        setCards(snapshot.docs.map((d) => ({ id: d.id ,...d.data()})))
+        //setLoading(false)
+    })
+    return unsubscribe
+}
+
+export const deleteTopicWIthCards = async (topicId) => {
+    try{
+        const topicRef = doc(db,"topics",topicId)
+        const cardRef = collection(topicRef, "cards")
+        const cardSnap = await getDoc(cardRef)
+        const batch = writeBatch(db)
+        cardSnap.forEach((card) => {
+            batch.delete(card.ref)
+        });
+        await batch.commit()
+        await deleteDoc(topicRef)
+        
+    }catch(error){
+        console.log("Hiba a törléskor: ",error);
+        
+    }
+}
+
+export const getCard = async (topicId,cardId) => {
+    try {
+        
+    } catch (error) {
+        console.log("Kártya lekérési hiba: ",error);
+        
+    }
+}
+
+export const deleteCard = async (topicId,cardId) => {
+    try {
+        await deleteDoc(doc(db, "topics", topicId, "cards", cardId))
+    } catch (error) {
+        console.log("Kártya törlési hiba:",error);
+        
+    }
+}
+
+export const updateCard = async (topicId, cardId, updateData) => {
+    try {
+        const docRef = doc(db, "topics", "cards", cardId)
+        await updateDoc(docRef, {...updateData})
+    } catch (error) {
+        console.log("Hiba a kártya frissítésekor: ", error);
+        
+    }
+}
+
+export const deleteTopic = async () => {
+    const id=""
+
+    try {
+        await deleteDoc(db, "topics", id)
+    } catch (error) {
+        console.log(error);
+        
     }
 }

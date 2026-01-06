@@ -15,13 +15,13 @@ import { useState } from 'react';
 export const AccessKeyModal = ({open,onClose,onSuccess}) => {
     const [key,setKey] = useState("")
     const {verifyKey} = useContext(AccessContext)
-
     const handleSubmit = async (event) => {
         event.preventDefault()
         const result = await verifyKey(key)
         if(result){
             onClose()
             onSuccess()
+            setKey("")
         }else{
             alert("Hibás kulcs!")
         }

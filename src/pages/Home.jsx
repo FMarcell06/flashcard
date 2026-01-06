@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import { AccessContext } from '../context/MyAccessProvider'
 
 export const Home = () => {
-    const {token} = useContext(AccessContext)
+    const {hasAccess} = useContext(AccessContext)
     
     const navigate = useNavigate()
 
@@ -14,7 +14,7 @@ export const Home = () => {
 
             <button onClick={() => navigate("/topics")}>Topicok</button>
 
-            {token && (
+            {hasAccess && (
                 <button onClick={() => navigate("/addcard")} className="primary">
                     Új kártya hozzáadása
                 </button>
