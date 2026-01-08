@@ -95,7 +95,7 @@ body{
 .topic-title {
   color: #ff6f61; /* meleg szín */
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
   text-align: center;
 }
 
@@ -241,7 +241,7 @@ body{
   left: 0;
   z-index: 1000;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 
   background-color: #ff6f61;
@@ -267,6 +267,106 @@ body{
   font-weight: bold;
   margin: 0;
 }
+
+/* Add Card gomb */
+.del-card-btn {
+  background-color: #f87171;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.del-card-btn:hover {
+  background-color: #dc2626;
+}
+
+.loginBtn {
+width: auto;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #ffb47c;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.loginBtn:hover{
+  background-color: #ff914d;
+}
+
+/* háttér – ugyanaz a világos, meleg tónus */
+.addcard-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* kártya */
+.addcard {
+  width: 420px;
+  background: #fff7f0;
+  border-radius: 18px;
+  padding: 32px 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* címkék */
+.addcard p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ff6f61;
+}
+
+/* input mezők */
+.addcard input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 2px solid #f2c2a4;
+  font-size: 15px;
+  background: #fff;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+.addcard input:focus {
+  border-color: #e27c6b;
+}
+
+/* mentés gomb */
+.addcard button {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #ffb47c;
+  color: #fff;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.addcard button:hover {
+  background: #ff914d;
+}
+
+.addcard button:active {
+  transform: scale(0.97);
+}
+
+
 
 .flipCard{
   display: flex;

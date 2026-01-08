@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, QuerySnapshot, where, writeBatch } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, QuerySnapshot, updateDoc, where, writeBatch } from "firebase/firestore";
 import { db } from "./firebaseApp";
 
 
@@ -79,7 +79,7 @@ export const deleteTopicWIthCards = async (topicId) => {
     try{
         const topicRef = doc(db,"topics",topicId)
         const cardRef = collection(topicRef, "cards")
-        const cardSnap = await getDoc(cardRef)
+        const cardSnap = await getDocs(cardRef)
         const batch = writeBatch(db)
         cardSnap.forEach((card) => {
             batch.delete(card.ref)
@@ -93,14 +93,21 @@ export const deleteTopicWIthCards = async (topicId) => {
     }
 }
 
-export const getCard = async (topicId,cardId) => {
-    try {
-        
-    } catch (error) {
-        console.log("Kártya lekérési hiba: ",error);
-        
+export const readCardOnce = async (topicId, cardId, setCard) => {
+  try {
+    const docRef = doc(db, "topics", topicId, "cards", cardId);
+    const snap = await getDoc(docRef);
+
+    if (snap.exists()) {
+      setCard({ id: snap.id, ...snap.data() });
+    } else {
+      console.log("Nincs ilyen kártya");
+      setCard(null);
     }
-}
+  } catch (error) {
+    console.error("Egyszeri kártya lekérési hiba:", error);
+  }
+};
 
 export const deleteCard = async (topicId,cardId) => {
     try {
@@ -112,8 +119,10 @@ export const deleteCard = async (topicId,cardId) => {
 }
 
 export const updateCard = async (topicId, cardId, updateData) => {
+    console.log(topicId,cardId,updateData);
+    
     try {
-        const docRef = doc(db, "topics", "cards", cardId)
+        const docRef = doc(db, "topics", topicId, "cards", cardId)
         await updateDoc(docRef, {...updateData})
     } catch (error) {
         console.log("Hiba a kártya frissítésekor: ", error);
@@ -121,11 +130,19 @@ export const updateCard = async (topicId, cardId, updateData) => {
     }
 }
 
-export const deleteTopic = async () => {
-    const id=""
-
+export const deleteTopic = async (topicId) => {
     try {
-        await deleteDoc(db, "topics", id)
+        const topicRef = doc(db,"topics",topicId)
+        const cardsRef = collection(topicRef,"cards")
+        const cardSnap = await getDocs(cardsRef)
+        const batch = writeBatch(db)
+        cardSnap.forEach((card)=>{
+            batch.delete(card.ref)
+        })
+        await batch.commit()
+        await deleteDoc(db, "topics", topicId)
+        console.log("Téma és összes kártya törölve");
+        
     } catch (error) {
         console.log(error);
         

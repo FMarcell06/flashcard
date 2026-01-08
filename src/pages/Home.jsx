@@ -13,12 +13,6 @@ export const Home = () => {
             <h1>Home</h1>
 
             <button onClick={() => navigate("/topics")}>Topicok</button>
-
-            {hasAccess && (
-                <button onClick={() => navigate("/addcard")} className="primary">
-                    Új kártya hozzáadása
-                </button>
-            )}
             </div>
         </div>
     )

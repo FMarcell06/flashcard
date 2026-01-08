@@ -10,10 +10,13 @@ import { AddCard } from './pages/AddCard'
 import { AddTopic } from './pages/AddTopic'
 import { Topic } from './pages/Topic'
 import '@fontsource/inter';
+import { useContext } from 'react'
+import { AccessContext, MyAccessProvider } from './context/MyAccessProvider'
 
 
 function App() {
   const [count, setCount] = useState(0)
+  const {hasAccess} = useContext(AccessContext)
 
   return (
     <div className="container">
@@ -21,10 +24,11 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />}></Route>
         <Route path='/topics' element={<Topics />}></Route>
-        <Route path='/addcard' element={<AddCard />}></Route>
-        <Route path='/addtopic' element={<AddTopic />}></Route>
+        <Route path='/addcard' element={hasAccess?<AddCard />:<Home/>}></Route>
+        <Route path='/addtopic' element={hasAccess?<AddTopic />:<Home/>}></Route>
         <Route path='/topic/:id' element={<Topic />}></Route>
-        <Route path='/addcard/:id' element={<AddCard />}></Route>
+        <Route path='/addcard/:id' element={hasAccess?<AddCard /> : <Home/>}></Route>
+        <Route path='/edit/:id/:cardId' element={hasAccess?<AddCard />:<Home/>}></Route>
       </Routes>
     </div>
   )

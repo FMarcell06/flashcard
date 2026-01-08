@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { deleteCard, readCards, readCardsOnce, readTopicById } from '../myBackend';
+import { deleteCard, deleteTopic, deleteTopicWIthCards, readCards, readCardsOnce, readTopicById } from '../myBackend';
 import { MyFlashCard } from '../components/MyFlashCard';
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
@@ -17,6 +17,7 @@ export const Topic = () => {
   const [loading,setLoading] = useState(false)
   const [open, setOpen] = React.useState(false);
   const {hasAccess} = useContext(AccessContext)
+  const [flipped,setFlipped] = useState(false)
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -38,8 +39,22 @@ export const Topic = () => {
     if(hasAccess) deleteCard(id,currentCard?.id)
   }
 
-  const next = () => setCurrentIndex(i => (i + 1) % cards.length);
-  const prev = () => setCurrentIndex(i => (i - 1 + cards.length) % cards.length);  
+
+  const handleEditCard = () => {
+    if(hasAccess) navigate("/edit/"+id+"/"+cards[currentIndex].id)
+
+  }
+
+  const handleDeleteTopic = () => {
+    if(hasAccess) deleteTopicWIthCards(id)
+        navigate("/topics")
+  }
+  const next = () => {setCurrentIndex(i => (i + 1) % cards.length)
+    setFlipped(false)
+  };
+  const prev = () => {setCurrentIndex(i => (i - 1 + cards.length) % cards.length)
+    setFlipped(false)
+  };  
 
 
   const currentCard = cards[currentIndex];
@@ -54,7 +69,7 @@ export const Topic = () => {
         <p className="empty-list">A lista üres</p>
       ) : (
         <div className="card-container fadeIn">
-            {<MyFlashCard question={currentCard?.question} answer={currentCard?.answer}/>}
+            {<MyFlashCard question={currentCard?.question} answer={currentCard?.answer} flipped={flipped} setFlipped={setFlipped}/>}
           <div className="card-buttons">
             <button onClick={prev}><FaArrowCircleLeft  size={35}/></button>
             <button onClick={next}><FaArrowCircleRight size={35}/></button>
@@ -65,9 +80,9 @@ export const Topic = () => {
 
       <div style={{display:"flex",gap:"5px"}}>
         <button className="add-card-btn" onClick={handleAddCard}>Add Card</button>
-        {hasAccess&& <div style={{display:"flex",gap:"5px"}}><button className="add-card-btn" onClick={handleAddCard}>Edit card</button>
-        <button className="add-card-btn" onClick={handleDeleteCard}>Delete card</button>
-        <button className="add-card-btn" onClick={handleAddCard}>Delete topic</button></div>
+        {hasAccess&& <div style={{display:"flex",gap:"5px"}}><button className="add-card-btn" onClick={handleEditCard}>Edit card</button>
+        <button className="del-card-btn" onClick={handleDeleteCard}>Delete card</button>
+        <button className="del-card-btn" onClick={handleDeleteTopic}>Delete topic</button></div>
         }
       </div>
         <AccessKeyModal open={open} onClose={()=>setOpen(false)} onSuccess={()=>navigate("/addcard")}/>
